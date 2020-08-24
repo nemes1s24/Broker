@@ -15,19 +15,15 @@ namespace Server
             Console.WriteLine("Server started.");
 
             const string fileName = "Settings.xml";
-            Options options;
-            try
-            {
-                using var fileStream = File.Open(fileName, FileMode.Open);
-                var serializer = new XmlSerializer(typeof(Options));
-                options = (Options)serializer.Deserialize(fileStream);
-
-            }
-            catch (FileNotFoundException)
+            if (!File.Exists(fileName))
             {
                 Console.WriteLine($"{fileName} not found.");
                 return;
             }
+
+            using var fileStream = File.Open(fileName, FileMode.Open);
+            var serializer = new XmlSerializer(typeof(Options));
+            var options = (Options)serializer.Deserialize(fileStream);
 
             var random = new Random();
             const int mode = 35000;
